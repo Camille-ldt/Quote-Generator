@@ -1,5 +1,4 @@
 // Création d'un tableau d'objets contenant les citations avec leurs auteurs
-
 let allQuote = [
     { quote: "Le succès n'est pas la clé du bonheur. Le bonheur est la clé du succès.", author: "– Albert Schweitzer" },
     { quote: "Il n'y a qu'une façon d'échouer, c'est d'abandonner avant d'avoir réussi.", author: "– Olivier Lockert" },
@@ -24,5 +23,56 @@ let allQuote = [
     
 ]
 
-// console.log(allQuote)
+  // Fonction qui permet de récupérer une citation aléatoire
+  function getRandomQuote() {
+      const index = Math.floor(Math.random() * allQuote.length);
+      return allQuote[index];
+  }
+  
+  // Fonction pour l'animation d'écriture
+  async function typeWriter(element, text, speed ) {
+      element.textContent = '';
+      element.classList.add('cursor');
+      
+      for (let i = 0; i < text.length; i++) {
+          element.textContent += text[i];
+          await new Promise(resolve => setTimeout(resolve, speed));
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100)); // Pause à la fin
+      element.classList.remove('cursor');
+  }
+  
+  // Fonction qui permet d'afficher des citations aléatoires dans mon HTML avec animation
+  async function showNewQuote() {
+      const button = document.getElementById('new-quote');
+      button.disabled = true;
+      button.classList.add('opacity-50', 'cursor-not-allowed');
+  
+      const showRandomQuote = getRandomQuote();
+      const quoteElem = document.getElementById('quote');
+      const authorElem = document.getElementById('author');
+  
+      await typeWriter(quoteElem, `"${showRandomQuote.quote}"`, 70);
+      await typeWriter(authorElem, `${showRandomQuote.author}`, 90);
+  
+      button.disabled = false;
+      button.classList.remove('opacity-50', 'cursor-not-allowed');
+  }
+  
+  // Button permettant l'affichage des citations aléatoirement
+  document.addEventListener('DOMContentLoaded', () => {
+      const button = document.getElementById('new-quote');
+      button.addEventListener('click', showNewQuote);
+      showNewQuote(); 
+  });
+
+
+
+
+
+
+
+
+
 
